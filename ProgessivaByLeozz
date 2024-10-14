@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Progressiva, by leozz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input {
+            margin: 10px;
+            padding: 10px;
+            font-size: 1em;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .all-results {
+            margin-top: 20px;
+            font-size: 1em;
+            color: #333;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Calculadora de Progressiva</h1>
+
+    <input type="text" id="materia" placeholder="Nome da matéria"><br>
+    <input type="number" id="n1" placeholder="Média do 1º bimestre"><br>
+    <input type="number" id="n2" placeholder="Média do 2º bimestre"><br>
+    <input type="number" id="n3" placeholder="Média do 3º bimestre"><br>
+    <input type="number" id="n4" placeholder="Nota do teste do 4º bimestre"><br>
+
+    <button onclick="calcularNota()">Calcular Nota</button>
+    <button onclick="mostrarTodasNotas()">Mostrar Todas as Notas</button>
+
+    <div class="result" id="resultado"></div>
+    <div class="all-results" id="todasNotas"></div>
+</div>
+
+<script>
+    // Array para armazenar as notas
+    var notasArmazenadas = [];
+
+    function calcularNota() {
+        // Coleta dos dados
+        var materia = document.getElementById('materia').value;
+        var n1 = parseFloat(document.getElementById('n1').value);
+        var n2 = parseFloat(document.getElementById('n2').value);
+        var n3 = parseFloat(document.getElementById('n3').value);
+        var n4 = parseFloat(document.getElementById('n4').value);
+
+        // Verificação se os valores são válidos
+        if (isNaN(n1) || isNaN(n2) || isNaN(n3) || isNaN(n4) || materia === "") {
+            document.getElementById('resultado').innerHTML = "Por favor, insira valores válidos para todas as notas e o nome da matéria.";
+            return;
+        }
+
+        // Cálculo da nota necessária
+        var nb = (n1 + n2) / 2;
+        var nf = (168 - (6 * nb + 3 * n3 + n4)) / 14;
+
+        // Armazenamento da nota no array
+        notasArmazenadas.push({ materia: materia, notaFinal: nf.toFixed(2) });
+
+        // Exibição do resultado imediato
+        document.getElementById('resultado').innerHTML = "A nota que você precisa na prova de " + materia + " é: " + nf.toFixed(2);
+
+        // Limpa os campos após cálculo
+        document.getElementById('materia').value = "";
+        document.getElementById('n1').value = "";
+        document.getElementById('n2').value = "";
+        document.getElementById('n3').value = "";
+        document.getElementById('n4').value = "";
+    }
+
+    function mostrarTodasNotas() {
+        var todasNotasDiv = document.getElementById('todasNotas');
+        todasNotasDiv.innerHTML = "";  // Limpa antes de mostrar
+
+        if (notasArmazenadas.length === 0) {
+            todasNotasDiv.innerHTML = "Nenhuma nota calculada ainda.";
+            return;
+        }
+
+        var htmlNotas = "<h3>Notas Calculadas:</h3><ul>";
+        notasArmazenadas.forEach(function(nota) {
+            htmlNotas += "<li>" + nota.materia + ": " + nota.notaFinal + "</li>";
+        });
+        htmlNotas += "</ul>";
+
+        todasNotasDiv.innerHTML = htmlNotas;
+    }
+</script>
+
+</body>
+</html>
